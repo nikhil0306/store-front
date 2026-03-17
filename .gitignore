@@ -5,6 +5,7 @@ node_modules/
 # Environment
 .env
 **/.env
+**/.env.local
 
 # Next.js
 frontend/.next/
