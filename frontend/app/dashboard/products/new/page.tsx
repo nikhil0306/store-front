@@ -18,6 +18,10 @@ export default function NewProductPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [imageUrls, setImageUrls] = useState<string[]>([])
+    const [keywords, setKeywords] = useState("")
+    const [aiSuggestion, setAiSuggestion] = useState<{ name: string, description: string } | null>(null)
+    const [aiLoading, setAiLoading] = useState(false)
+    const [aiError, setAiError] = useState("")
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -69,6 +73,40 @@ export default function NewProductPage() {
             setLoading(false)
         }
     }
+
+    const handleGenerateAI = async () => {
+        if (!keywords.trim()) return
+
+        setAiLoading(true)
+        setAiError("")
+        setAiSuggestion(null)
+
+        try {
+            const res = await fetch("http://localhost:5000/api/ai/product-copy", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    keywords,
+                    userEmail: session?.user?.email,
+                    storeName: "",
+                }),
+            })
+
+            const data = await res.json()
+
+            if (!res.ok) {
+                setAiError(data.error?.message || "AI generation failed")
+                return
+            }
+
+            setAiSuggestion(data)
+        } catch (err) {
+            setAiError("Could not connect to server")
+        } finally {
+            setAiLoading(false)
+        }
+    }
+
 
     return (
         <div className="max-w-lg">
@@ -152,6 +190,50 @@ export default function NewProductPage() {
                             placeholder="Chocolates, Cakes, Cupcakes..."
                             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
                         />
+                    </div>
+                </div>
+
+
+                {/* AI Copy Writer — Coming Soon */}
+                <div className="relative">
+                    {/* Overlay */}
+                    <div className="absolute inset-0 bg-red-500/10 backdrop-blur-[1px] rounded-lg z-10 flex flex-col items-center justify-center gap-1">
+                        <span className="text-xs font-large text-red-500">
+                            Currently unavailable
+                        </span>
+                        {/* <span className="text-xs text-red-500">
+                            Currently unavailable
+                        </span> */}
+                    </div>
+
+                    {/* UI underneath — blurred and non-interactive */}
+                    <div className="border border-amber-100 bg-amber-50 rounded-lg p-4 pointer-events-none select-none opacity-60">
+                        <p className="text-xs font-medium text-amber-700 uppercase tracking-wide mb-2">
+                            AI Generator
+                        </p>
+                        <div className="flex gap-2">
+                            <input
+                                type="text"
+                                disabled
+                                placeholder="Product Information"
+                                className="flex-1 border border-amber-200 rounded-lg px-3 py-2 text-sm bg-white"
+                            />
+                            <button
+                                type="button"
+                                disabled
+                                className="px-4 py-2 bg-amber-500 text-white text-sm font-medium rounded-lg opacity-50 whitespace-nowrap"
+                            >
+                                Generate
+                            </button>
+                        </div>
+                        <div className="mt-3 p-3 bg-white border border-amber-200 rounded-lg">
+                            <p className="text-xs font-medium text-gray-400 mb-1">
+                                Product title
+                            </p>
+                            <p className="text-xs text-gray-300 leading-relaxed">
+                                Product description
+                            </p>
+                        </div>
                     </div>
                 </div>
 
