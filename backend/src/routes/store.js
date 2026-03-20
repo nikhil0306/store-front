@@ -143,4 +143,60 @@ router.get('/me', async (req, res) => {
     }
 })
 
+
+
+// PATCH /store/me — update store details
+router.patch('/me', async (req, res) => {
+    try {
+        const { userEmail, name, description, city, themeColor } = req.body
+
+        if (!userEmail) {
+            return res.status(400).json({
+                error: { code: 'MISSING_EMAIL', message: 'userEmail is required', status: 400 },
+            })
+        }
+
+        // Find user
+        const user = await prisma.user.findUnique({
+            where: { email: userEmail },
+        })
+
+        if (!user) {
+            return res.status(404).json({
+                error: { code: 'USER_NOT_FOUND', message: 'User not found', status: 404 },
+            })
+        }
+
+        // Find their store
+        const store = await prisma.store.findUnique({
+            where: { userId: user.id },
+        })
+
+        if (!store) {
+            return res.status(404).json({
+                error: { code: 'STORE_NOT_FOUND', message: 'No store found', status: 404 },
+            })
+        }
+
+        // Update only fields that were provided
+        const updated = await prisma.store.update({
+            where: { id: store.id },
+            data: {
+                ...(name && { name }),
+                ...(description !== undefined && { description }),
+                ...(city !== undefined && { city }),
+                ...(themeColor && { themeColor }),
+            },
+        })
+
+        return res.json(updated)
+    } catch (error) {
+        console.error('Update store error:', error)
+        return res.status(500).json({
+            error: { code: 'SERVER_ERROR', message: 'Something went wrong', status: 500 },
+        })
+    }
+})
+
+
 module.exports = router
