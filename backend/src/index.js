@@ -6,6 +6,7 @@ const storeRoutes = require('./routes/store')
 const productRoutes = require('./routes/products')
 const authRoutes = require('./routes/auth')
 const uploadRoutes = require('./routes/upload')
+const aiRoutes = require('./routes/ai')
 
 const app = express()
 const PORT = process.env.PORT || 5000
@@ -23,6 +24,7 @@ app.use('/api/store', storeRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/upload', uploadRoutes)
+app.use('/api/ai', aiRoutes)
 
 // Global error handler
 app.use((err, req, res, next) => {

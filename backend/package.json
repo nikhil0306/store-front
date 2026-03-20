@@ -11,6 +11,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "@google/generative-ai": "^0.24.1",
     "@prisma/client": "^6.19.2",
     "cloudinary": "^2.9.0",
     "cors": "^2.8.6",
