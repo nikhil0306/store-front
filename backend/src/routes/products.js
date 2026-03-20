@@ -14,6 +14,7 @@ router.post('/', async (req, res) => {
             category,
             isVisible,
             isFeatured,
+            imageUrls,
         } = req.body
 
         // Validate required fields
@@ -66,7 +67,7 @@ router.post('/', async (req, res) => {
                 category: category || null,
                 isVisible: isVisible !== undefined ? isVisible : true,
                 isFeatured: isFeatured !== undefined ? isFeatured : false,
-                imageUrls: [],
+                imageUrls: imageUrls || [],
             },
         })
 
