@@ -12,6 +12,23 @@ const handler = NextAuth({
         signIn: "/login",
     },
     callbacks: {
+        async signIn({ user }) {
+            try {
+                // Sync user to our database
+                await fetch("http://localhost:5000/api/auth/sync-user", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        name: user.name,
+                        email: user.email,
+                        image: user.image,
+                    }),
+                })
+            } catch (error) {
+                console.error("Failed to sync user:", error)
+            }
+            return true
+        },
         async session({ session, token }) {
             return session
         },
