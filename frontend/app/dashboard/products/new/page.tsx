@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import ImageUploadZone from "@/components/dashboard/ImageUploadZone"
 
 export default function NewProductPage() {
     const { data: session } = useSession()
@@ -16,6 +17,7 @@ export default function NewProductPage() {
     const [category, setCategory] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
+    const [imageUrls, setImageUrls] = useState<string[]>([])
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -49,6 +51,7 @@ export default function NewProductPage() {
                     stock: parseInt(stock),
                     description,
                     category,
+                    imageUrls,
                 }),
             })
 
@@ -150,6 +153,16 @@ export default function NewProductPage() {
                             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
                         />
                     </div>
+                </div>
+
+                <div>
+                    <label className="text-xs text-gray-500 block mb-1">
+                        Product images
+                    </label>
+                    <ImageUploadZone
+                        imageUrls={imageUrls}
+                        onImagesChange={setImageUrls}
+                    />
                 </div>
 
                 {error && (
