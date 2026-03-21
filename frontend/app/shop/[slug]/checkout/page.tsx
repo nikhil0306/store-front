@@ -40,6 +40,8 @@ export default function CheckoutPage() {
     const [pincode, setPincode] = useState("")
     const [note, setNote] = useState("")
     const [errors, setErrors] = useState<Record<string, string>>({})
+    const [loading, setLoading] = useState(false)
+    const [error, setError] = useState("")
 
     const validate = () => {
         const newErrors: Record<string, string> = {}
@@ -56,13 +58,84 @@ export default function CheckoutPage() {
         return Object.keys(newErrors).length === 0
     }
 
-    const handleProceed = () => {
+
+    const loadCashfree = (): Promise<any> => {
+        return new Promise((resolve) => {
+            const script = document.createElement("script")
+            script.src = "https://sdk.cashfree.com/js/v3/cashfree.js"
+            script.onload = () => {
+                const cashfree = (window as any).Cashfree({
+                    mode: "sandbox",
+                })
+                resolve(cashfree)
+            }
+            document.head.appendChild(script)
+        })
+    }
+
+
+    const handleProceed = async () => {
         if (cart.length === 0) {
             router.push(`/shop/${slug}`)
             return
         }
         if (!validate()) return
-        alert("Payment coming in Story #20!")
+
+        setLoading(true)
+        setError("")
+
+        try {
+            // Get store details first
+            const storeRes = await fetch(`http://localhost:5000/api/store/${slug}`)
+            const storeData = await storeRes.json()
+
+            if (!storeRes.ok) {
+                setError("Store not found")
+                return
+            }
+
+            // Create order
+            const orderRes = await fetch("http://localhost:5000/api/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    storeId: storeData.id,
+                    customerName: name,
+                    customerPhone: phone,
+                    customerEmail: email,
+                    deliveryAddress: address,
+                    deliveryCity: city,
+                    deliveryPincode: pincode,
+                    note,
+                    items: cart.map((item) => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                    })),
+                }),
+            })
+
+            const orderData = await orderRes.json()
+
+            if (!orderRes.ok) {
+                setError(orderData.error?.message || "Failed to create order")
+                return
+            }
+
+            // Load Cashfree SDK and open payment
+            const cashfree = await loadCashfree()
+
+            const checkoutOptions = {
+                paymentSessionId: orderData.paymentSessionId,
+                returnUrl: `http://localhost:3000/shop/order-success?orderId=${orderData.orderId}&orderNumber=${orderData.orderNumber}`,
+            }
+
+            cashfree.checkout(checkoutOptions)
+
+        } catch (err) {
+            setError("Something went wrong. Please try again.")
+        } finally {
+            setLoading(false)
+        }
     }
 
     if (cart.length === 0) {
@@ -251,11 +324,18 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Pay button */}
+                {error && (
+                    <p className="text-xs text-red-500 bg-red-50 border border-red-100 rounded-lg px-3 py-2">
+                        {error}
+                    </p>
+                )}
+
                 <button
                     onClick={handleProceed}
-                    className="w-full py-3 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-700 transition"
+                    disabled={loading}
+                    className="w-full py-3 bg-gray-900 text-white font-medium rounded-xl hover:bg-gray-700 transition disabled:opacity-50"
                 >
-                    Pay ₹{total.toFixed(2)}
+                    {loading ? "Processing..." : `Pay ₹${total.toFixed(2)}`}
                 </button>
             </div>
         </div>
