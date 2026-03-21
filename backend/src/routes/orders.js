@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const prisma = require('../lib/prisma')
 const { Cashfree, CFEnvironment } = require('cashfree-pg')
+const { sendOrderNotification } = require('../services/email')
 
 // Configure Cashfree instance
 const cashfree = new Cashfree()
@@ -177,6 +178,26 @@ router.post('/:id/verify-payment', async (req, res) => {
                 data: { stock: { decrement: item.quantity } },
             })
         }
+
+        // Send email notification to seller (non-blocking)
+        try {
+            const store = await prisma.store.findUnique({
+                where: { id: order.storeId },
+                include: { user: true },
+            })
+            if (store?.user?.email) {
+                Promise.resolve(
+                    sendOrderNotification(
+                        { ...order, items: order.items },
+                        store,
+                        store.user.email
+                    )
+                ).catch((err) => console.error('Email error:', err))
+            }
+        } catch (emailError) {
+            console.error('Email notification error:', emailError)
+        }
+
 
         return res.json({
             success: true,
