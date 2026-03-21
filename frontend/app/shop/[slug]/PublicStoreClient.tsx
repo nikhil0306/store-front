@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 interface Product {
     id: string
@@ -32,6 +34,8 @@ interface CartItem {
 }
 
 export default function PublicStoreClient({ store }: { store: Store }) {
+
+    const router = useRouter()
     const [cart, setCart] = useState<CartItem[]>([])
     const [activeCategory, setActiveCategory] = useState("All")
     const [showCart, setShowCart] = useState(false)
@@ -85,6 +89,16 @@ export default function PublicStoreClient({ store }: { store: Store }) {
 
     const cartTotal = cart.reduce((sum, i) => sum + i.price * i.quantity, 0)
     const cartCount = cart.reduce((sum, i) => sum + i.quantity, 0)
+
+    // Save cart to localStorage on every change
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem(
+                `storefront_cart_${store.slug}`,
+                JSON.stringify(cart)
+            )
+        }
+    }, [cart, store.slug])
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -234,8 +248,7 @@ export default function PublicStoreClient({ store }: { store: Store }) {
                         </button>
                         <button
                             className="px-5 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition min-h-[40px]"
-                            onClick={() => alert("Checkout coming in Week 3!")}
-                        >
+                            onClick={() => router.push(`/shop/${store.slug}/checkout`)}                        >
                             Checkout
                         </button>
                     </div>
