@@ -144,7 +144,6 @@ router.get('/me', async (req, res) => {
 })
 
 
-
 // PATCH /store/me — update store details
 router.patch('/me', async (req, res) => {
     try {
@@ -197,6 +196,37 @@ router.patch('/me', async (req, res) => {
         })
     }
 })
+
+// GET /store/:slug — public store page data
+router.get('/:slug', async (req, res) => {
+    try {
+        const { slug } = req.params
+
+        const store = await prisma.store.findUnique({
+            where: { slug },
+            include: {
+                products: {
+                    where: { isVisible: true },
+                    orderBy: { createdAt: 'desc' },
+                },
+            },
+        })
+
+        if (!store || !store.isActive) {
+            return res.status(404).json({
+                error: { code: 'STORE_NOT_FOUND', message: 'Store not found', status: 404 },
+            })
+        }
+
+        return res.json(store)
+    } catch (error) {
+        console.error('Get public store error:', error)
+        return res.status(500).json({
+            error: { code: 'SERVER_ERROR', message: 'Something went wrong', status: 500 },
+        })
+    }
+})
+
 
 
 module.exports = router
