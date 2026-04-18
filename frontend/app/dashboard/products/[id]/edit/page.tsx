@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 import { useRouter, useParams } from "next/navigation"
 import Link from "next/link"
 import ImageUploadZone from "@/components/dashboard/ImageUploadZone"
+import { API_URL } from "@/lib/api"
 
 export default function EditProductPage() {
     const { data: session } = useSession()
@@ -31,7 +32,7 @@ export default function EditProductPage() {
         const fetchProduct = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:5000/api/products/${productId}?userEmail=${session.user?.email}`
+                    `${API_URL}/api/products/${productId}?userEmail=${session.user?.email}`
                 )
                 const data = await res.json()
 
@@ -68,7 +69,7 @@ export default function EditProductPage() {
         setLoading(true)
 
         try {
-            const res = await fetch(`http://localhost:5000/api/products/${productId}`, {
+            const res = await fetch(`${API_URL}/api/products/${productId}`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -103,7 +104,7 @@ export default function EditProductPage() {
 
         try {
             const res = await fetch(
-                `http://localhost:5000/api/products/${productId}?userEmail=${session?.user?.email}`,
+                `${API_URL}/api/products/${productId}?userEmail=${session?.user?.email}`,
                 { method: "DELETE" }
             )
 

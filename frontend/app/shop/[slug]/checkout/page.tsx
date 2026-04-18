@@ -4,6 +4,7 @@ import { useState } from "react"
 import { useRouter, useParams } from "next/navigation"
 import "../../shop.css"
 import "./checkout.css"
+import { API_URL } from "@/lib/api"
 
 interface CartItem {
     productId: string
@@ -73,11 +74,11 @@ export default function CheckoutPage() {
         setLoading(true)
         setError("")
         try {
-            const storeRes = await fetch(`http://localhost:5000/api/store/${slug}`)
+            const storeRes = await fetch(`${API_URL}/api/store/${slug}`)
             const storeData = await storeRes.json()
             if (!storeRes.ok) { setError("Store not found"); return }
 
-            const orderRes = await fetch("http://localhost:5000/api/orders", {
+            const orderRes = await fetch(`${API_URL}/api/orders`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -98,7 +99,7 @@ export default function CheckoutPage() {
             const cashfree = await loadCashfree()
             cashfree.checkout({
                 paymentSessionId: orderData.paymentSessionId,
-                returnUrl: `http://localhost:3000/shop/order-success?orderId=${orderData.orderId}&orderNumber=${orderData.orderNumber}`,
+                returnUrl: `${window.location.origin}/shop/order-success?orderId=${orderData.orderId}&orderNumber=${orderData.orderNumber}`,
             })
         } catch (err) {
             setError("Something went wrong. Please try again.")

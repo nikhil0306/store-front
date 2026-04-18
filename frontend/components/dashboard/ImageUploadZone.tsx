@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
+import { API_URL } from "@/lib/api"
 
 interface Props {
     imageUrls: string[]
@@ -41,7 +42,7 @@ export default function ImageUploadZone({ imageUrls, onImagesChange }: Props) {
             const formData = new FormData()
             formData.append("file", file)
 
-            const res = await fetch("http://localhost:5000/api/upload/image", {
+            const res = await fetch(`${API_URL}/api/upload/image`, {
                 method: "POST",
                 body: formData,
             })

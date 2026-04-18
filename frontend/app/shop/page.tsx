@@ -6,6 +6,7 @@ import "../landing.css"
 import "./shops.css"
 import Navbar from "@/components/layout/Navbar"
 import Footer from "@/components/layout/Footer"
+import { API_URL } from "@/lib/api"
 
 interface Store {
     id: string
@@ -27,7 +28,7 @@ export default function ShopsPage() {
     useEffect(() => {
         const fetchStores = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/stores")
+                const res = await fetch(`${API_URL}/api/stores`)
                 const data = await res.json()
                 if (res.ok) setStores(data.stores)
             } catch (err) {

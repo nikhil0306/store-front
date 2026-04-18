@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
+import { API_URL } from "@/lib/api"
 
 interface OrderItem {
     id: string
@@ -31,16 +32,16 @@ interface Order {
 }
 
 const statusBadgeClass: Record<string, string> = {
-    pending:   "db-badge db-badge-pending",
+    pending: "db-badge db-badge-pending",
     confirmed: "db-badge db-badge-confirmed",
-    packing:   "db-badge db-badge-packing",
+    packing: "db-badge db-badge-packing",
     delivered: "db-badge db-badge-delivered",
     cancelled: "db-badge db-badge-cancelled",
 }
 
 const nextStatus: Record<string, string> = {
     confirmed: "packing",
-    packing:   "delivered",
+    packing: "delivered",
 }
 
 export default function OrdersPage() {
@@ -58,7 +59,7 @@ export default function OrdersPage() {
     const fetchOrders = async () => {
         try {
             const res = await fetch(
-                `http://localhost:5000/api/orders?userEmail=${session?.user?.email}`
+                `${API_URL}/api/orders?userEmail=${session?.user?.email}`
             )
             const data = await res.json()
             if (res.ok) setOrders(data.orders)
@@ -73,7 +74,7 @@ export default function OrdersPage() {
         setUpdatingId(orderId)
         try {
             const res = await fetch(
-                `http://localhost:5000/api/orders/${orderId}/status`,
+                `${API_URL}/api/orders/${orderId}/status`,
                 {
                     method: "PATCH",
                     headers: { "Content-Type": "application/json" },

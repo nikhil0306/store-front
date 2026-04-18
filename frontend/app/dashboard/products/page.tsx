@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface Product {
     id: string
@@ -28,7 +29,7 @@ export default function ProductsPage() {
         const fetchProducts = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:5000/api/products?userEmail=${session.user?.email}`
+                    `${API_URL}/api/products?userEmail=${session.user?.email}`
                 )
                 const data = await res.json()
 

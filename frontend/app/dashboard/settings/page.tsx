@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useSession } from "next-auth/react"
+import { API_URL } from "@/lib/api"
 
 export default function SettingsPage() {
     const { data: session } = useSession()
@@ -21,7 +22,7 @@ export default function SettingsPage() {
         const fetchStore = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:5000/api/store/me?userEmail=${session.user?.email}`
+                    `${API_URL}/api/store/me?userEmail=${session.user?.email}`
                 )
                 const data = await res.json()
 
@@ -48,7 +49,7 @@ export default function SettingsPage() {
         setLoading(true)
 
         try {
-            const res = await fetch("http://localhost:5000/api/store/me", {
+            const res = await fetch(`${API_URL}/api/store/me`, {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
