@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from "react"
 import { useEffect, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import "../shop.css"
@@ -46,7 +47,7 @@ const statusColor: Record<string, string> = {
     cancelled: "status-cancelled",
 }
 
-export default function OrderSuccessPage() {
+function OrderSuccessInner() {
     const searchParams = useSearchParams()
     const router = useRouter()
     const orderId = searchParams.get("orderId")
@@ -264,5 +265,20 @@ export default function OrderSuccessPage() {
                 <p>Powered by <a href="/">StoreFront</a> · All rights reserved © {new Date().getFullYear()}</p>
             </footer>
         </div>
+    )
+}
+
+export default function OrderSuccessPage() {
+    return (
+        <Suspense fallback={
+            <div className="success-page">
+                <div className="success-loading">
+                    <div className="spinner" />
+                    <p>Loading...</p>
+                </div>
+            </div>
+        }>
+            <OrderSuccessInner />
+        </Suspense>
     )
 }
