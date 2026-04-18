@@ -11,41 +11,40 @@ interface Props {
 
 export default function TopbarWrapper({ userName, userImage, storeSlug }: Props) {
     return (
-        <div className="h-14 border-b border-gray-200 bg-white flex items-center justify-between px-4">
-            <div className="flex items-center gap-2">
-                <div className="w-7 h-7 bg-blue-100 rounded-md flex items-center justify-center text-sm font-medium text-blue-700">
-                    S
-                </div>
-                <span className="font-medium text-sm">StoreFront</span>
-            </div>
+        <header className="db-topbar">
+            <Link href="/dashboard" className="db-topbar-brand">
+                <div className="db-topbar-logo">S</div>
+                <span className="db-topbar-name">StoreFront</span>
+            </Link>
 
-            <div className="flex items-center gap-3">
+            <div className="db-topbar-right">
                 {storeSlug && (
                     <Link
                         href={`/shop/${storeSlug}`}
                         target="_blank"
-                        className="text-xs bg-blue-50 text-blue-700 px-3 py-1 rounded-full hover:bg-blue-100 transition"
+                        className="db-store-link-pill"
                     >
-                        storefront.app/shop/{storeSlug}
+                        /shop/{storeSlug} ↗
                     </Link>
                 )}
-                <div className="flex items-center gap-2">
+
+                <div className="db-topbar-user">
                     {userImage && (
                         <img
                             src={userImage}
                             alt="avatar"
-                            className="w-7 h-7 rounded-full"
+                            className="db-topbar-avatar"
                         />
                     )}
-                    <span className="text-xs text-gray-600">{userName}</span>
+                    <span className="db-topbar-username">{userName}</span>
                     <button
                         onClick={() => signOut({ callbackUrl: "/login" })}
-                        className="text-xs text-gray-500 hover:text-gray-700"
+                        className="db-signout-btn"
                     >
                         Sign out
                     </button>
                 </div>
             </div>
-        </div>
+        </header>
     )
 }

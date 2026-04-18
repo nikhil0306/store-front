@@ -35,8 +35,7 @@
 
 /* ── Header ── */
 .shop-header {
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
+    background: linear-gradient(135deg, #0B0F2F 0%, #1a2060 100%);
     padding: 20px 16px;
 }
 
@@ -65,11 +64,12 @@
     font-size: 20px;
     font-weight: 600;
     line-height: 1.2;
+    color: #ffffff;
 }
 
 .shop-store-desc {
     font-size: 13px;
-    color: var(--color-text-2);
+    color: rgba(255, 255, 255, 0.65);
     margin-top: 3px;
     line-height: 1.4;
 }
@@ -84,9 +84,9 @@
 
 .shop-meta-tag {
     font-size: 11px;
-    color: var(--color-text-3);
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 2px 8px;
     border-radius: var(--radius-full);
 }
@@ -435,18 +435,17 @@
     text-align: center;
     padding: 24px 16px;
     font-size: 12px;
-    color: var(--color-text-3);
-    border-top: 1px solid var(--color-border);
-    background: var(--color-surface);
+    color: rgba(255, 255, 255, 0.5);
+    background: #0B0F2F;
 }
 
 .shop-footer a {
-    color: var(--color-text-2);
+    color: rgba(255, 255, 255, 0.7);
     text-decoration: none;
 }
 
 .shop-footer a:hover {
-    color: var(--color-primary);
+    color: #D4A73A;
 }
 
 /* ── Empty state ── */

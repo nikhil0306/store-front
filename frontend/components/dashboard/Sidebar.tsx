@@ -4,32 +4,50 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const navItems = [
-    { label: "Overview", href: "/dashboard" },
-    { label: "Products", href: "/dashboard/products" },
-    { label: "Orders", href: "/dashboard/orders" },
-    { label: "Settings", href: "/dashboard/settings" },
+    { label: "Overview",  href: "/dashboard",          icon: "📊" },
+    { label: "Products",  href: "/dashboard/products", icon: "📦" },
+    { label: "Orders",    href: "/dashboard/orders",   icon: "🛒" },
+    { label: "Settings",  href: "/dashboard/settings", icon: "⚙️" },
 ]
 
 export default function Sidebar() {
     const pathname = usePathname()
 
+    const isActive = (href: string) =>
+        href === "/dashboard"
+            ? pathname === "/dashboard"
+            : pathname.startsWith(href)
+
     return (
-        <div className="w-48 min-h-screen border-r border-gray-200 bg-white py-4">
-            {navItems.map((item) => {
-                const isActive = pathname === item.href
-                return (
+        <>
+            {/* Desktop sidebar */}
+            <nav className="db-sidebar">
+                <p className="db-sidebar-label">Menu</p>
+                {navItems.map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}
-                        className={`flex items-center px-4 py-2 text-sm transition ${isActive
-                                ? "font-medium text-gray-900 bg-gray-100 border-l-2 border-gray-900"
-                                : "text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                            }`}
+                        className={`db-sidebar-link${isActive(item.href) ? " active" : ""}`}
                     >
+                        <span className="db-sidebar-icon">{item.icon}</span>
                         {item.label}
                     </Link>
-                )
-            })}
-        </div>
+                ))}
+            </nav>
+
+            {/* Mobile bottom tab bar */}
+            <nav className="db-bottom-nav">
+                {navItems.map((item) => (
+                    <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`db-bottom-nav-link${isActive(item.href) ? " active" : ""}`}
+                    >
+                        <span className="db-bottom-nav-icon">{item.icon}</span>
+                        {item.label}
+                    </Link>
+                ))}
+            </nav>
+        </>
     )
 }
