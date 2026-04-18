@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import ImageUploadZone from "@/components/dashboard/ImageUploadZone"
+import { API_URL } from "@/lib/api"
 
 export default function NewProductPage() {
     const { data: session } = useSession()
@@ -41,7 +42,7 @@ export default function NewProductPage() {
         setLoading(true)
 
         try {
-            const res = await fetch("http://localhost:5000/api/products", {
+            const res = await fetch(`${API_URL}/api/products`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

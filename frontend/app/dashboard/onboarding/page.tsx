@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useSession } from "next-auth/react"
 import { useRouter } from "next/navigation"
+import { API_URL } from "@/lib/api"
 
 export default function OnboardingPage() {
     const { data: session } = useSession()
@@ -42,7 +43,7 @@ export default function OnboardingPage() {
         setLoading(true)
 
         try {
-            const res = await fetch("http://localhost:5000/api/store", {
+            const res = await fetch(`${API_URL}/api/store`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({

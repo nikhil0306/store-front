@@ -15,7 +15,7 @@ const handler = NextAuth({
         async signIn({ user }) {
             try {
                 // Sync user to our database
-                await fetch("http://localhost:5000/api/auth/sync-user", {
+                await fetch(`${process.env.API_URL || 'http://localhost:5000'}/api/auth/sync-user`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import { API_URL } from "@/lib/api"
 
 interface Order {
     id: string
@@ -14,9 +15,9 @@ interface Order {
 }
 
 const statusBadgeClass: Record<string, string> = {
-    pending:   "db-badge db-badge-pending",
+    pending: "db-badge db-badge-pending",
     confirmed: "db-badge db-badge-confirmed",
-    packing:   "db-badge db-badge-packing",
+    packing: "db-badge db-badge-packing",
     delivered: "db-badge db-badge-delivered",
     cancelled: "db-badge db-badge-cancelled",
 }
@@ -30,7 +31,7 @@ export default function DashboardOverview({ userEmail }: { userEmail: string }) 
         const fetchOrders = async () => {
             try {
                 const res = await fetch(
-                    `http://localhost:5000/api/orders?userEmail=${userEmail}`
+                    `${API_URL}/api/orders?userEmail=${userEmail}`
                 )
                 const data = await res.json()
                 if (res.ok) setOrders(data.orders)

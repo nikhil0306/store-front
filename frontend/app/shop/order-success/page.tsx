@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import "../shop.css"
 import "./order-success.css"
+import { API_URL } from "@/lib/api"
 
 interface OrderItem {
     id: string
@@ -68,7 +69,7 @@ export default function OrderSuccessPage() {
             try {
                 // Verify payment
                 const verifyRes = await fetch(
-                    `http://localhost:5000/api/orders/${orderId}/verify-payment`,
+                    `${API_URL}/api/orders/${orderId}/verify-payment`,
                     { method: "POST" }
                 )
                 const verifyData = await verifyRes.json()
@@ -80,7 +81,7 @@ export default function OrderSuccessPage() {
 
                 // Fetch full order details
                 const orderRes = await fetch(
-                    `http://localhost:5000/api/orders/${orderId}`
+                    `${API_URL}/api/orders/${orderId}`
                 )
                 const orderData = await orderRes.json()
 
