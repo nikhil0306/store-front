@@ -1,0 +1,1346 @@
+/* ─────────────────────────────────────────────────────────
+   StoreFront — Seller Dashboard Design System
+   Same tokens as buyer-side (shop.css / shops.css)
+───────────────────────────────────────────────────────── */
+:root {
+    --db-bg: #F5F6FA;
+    --db-surface: #FFFFFF;
+    --db-primary: #0B0F2F;
+    --db-primary-hover: #1a2060;
+    --db-accent: #D4A73A;
+    --db-border: #E5E7EB;
+    --db-text-1: #0A0A0A;
+    --db-text-2: #6B7280;
+    --db-text-3: #9CA3AF;
+    --db-danger: #EF4444;
+    --db-danger-bg: #FEF2F2;
+    --db-success: #16A34A;
+    --db-success-bg: #F0FDF4;
+    --db-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --db-radius-sm: 6px;
+    --db-radius-md: 10px;
+    --db-radius-lg: 14px;
+    --db-radius-full: 999px;
+    --db-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --db-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --db-sidebar-w: 220px;
+    --db-topbar-h: 56px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* ── Root Layout ── */
+.db-root {
+    min-height: 100vh;
+    background: var(--db-bg);
+    font-family: var(--db-font);
+    color: var(--db-text-1);
+    overflow-x: hidden;
+    max-width: 100vw;
+}
+
+/* ── Topbar ── */
+.db-topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--db-topbar-h);
+    background: var(--db-surface);
+    border-bottom: 1px solid var(--db-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 100;
+    gap: 12px;
+}
+
+.db-topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: inherit;
+    flex-shrink: 0;
+}
+
+.db-topbar-logo {
+    width: 32px;
+    height: 32px;
+    background: var(--db-primary);
+    border-radius: var(--db-radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+    flex-shrink: 0;
+}
+
+.db-topbar-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--db-primary);
+    letter-spacing: -0.01em;
+}
+
+.db-topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    flex-shrink: 0;
+}
+
+.db-store-link-pill {
+    font-size: 12px;
+    color: var(--db-primary);
+    background: var(--db-bg);
+    border: 1px solid var(--db-border);
+    padding: 5px 12px;
+    border-radius: var(--db-radius-full);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.db-store-link-pill:hover {
+    border-color: var(--db-primary);
+    background: var(--db-surface);
+}
+
+.db-topbar-user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.db-topbar-avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: var(--db-radius-full);
+    object-fit: cover;
+    border: 2px solid var(--db-border);
+}
+
+.db-topbar-username {
+    font-size: 13px;
+    color: var(--db-text-2);
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.db-signout-btn {
+    font-size: 12px;
+    color: var(--db-text-2);
+    background: none;
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-sm);
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.db-signout-btn:hover {
+    color: var(--db-primary);
+    border-color: var(--db-primary);
+}
+
+/* ── Page Shell (below topbar) ── */
+.db-shell {
+    display: flex;
+    padding-top: var(--db-topbar-h);
+    min-height: 100vh;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* ── Sidebar ── */
+.db-sidebar {
+    width: var(--db-sidebar-w);
+    min-height: calc(100vh - var(--db-topbar-h));
+    background: var(--db-surface);
+    border-right: 1px solid var(--db-border);
+    padding: 20px 12px;
+    position: fixed;
+    top: var(--db-topbar-h);
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+}
+
+.db-sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--db-text-3);
+    padding: 0 8px;
+    margin: 12px 0 6px;
+}
+
+.db-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: var(--db-radius-md);
+    font-size: 14px;
+    color: var(--db-text-2);
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.db-sidebar-link:hover {
+    background: var(--db-bg);
+    color: var(--db-text-1);
+}
+
+.db-sidebar-link.active {
+    background: var(--db-bg);
+    color: var(--db-primary);
+    font-weight: 600;
+    border-left: 3px solid var(--db-primary);
+    padding-left: 9px;
+}
+
+.db-sidebar-icon {
+    width: 18px;
+    text-align: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+/* ── Main content area ── */
+.db-main {
+    margin-left: var(--db-sidebar-w);
+    flex: 1;
+    padding: 32px 28px;
+    /* prevent content from blowing out width */
+    width: calc(100% - var(--db-sidebar-w));
+    min-width: 0;
+    max-width: 1140px;
+    overflow-x: hidden;
+}
+
+/* ── Page Header ── */
+.db-page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.db-page-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--db-text-1);
+    margin: 0;
+    letter-spacing: -0.01em;
+}
+
+.db-page-subtitle {
+    font-size: 13px;
+    color: var(--db-text-2);
+    margin: 4px 0 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* ── Cards ── */
+.db-card {
+    background: var(--db-surface);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-lg);
+    overflow: hidden;
+}
+
+.db-card-body {
+    padding: 20px;
+}
+
+.db-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--db-border);
+}
+
+.db-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* ── Metric Cards ── */
+.db-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.db-metric-card {
+    background: var(--db-surface);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-lg);
+    padding: 18px 20px;
+    position: relative;
+}
+
+.db-metric-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--db-text-3);
+    margin-bottom: 8px;
+}
+
+.db-metric-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--db-primary);
+    letter-spacing: -0.02em;
+    line-height: 1;
+}
+
+/* ── Quick Actions ── */
+.db-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.db-action-card {
+    background: var(--db-surface);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-lg);
+    padding: 18px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.15s, transform 0.15s;
+    display: block;
+}
+
+.db-action-card:hover {
+    box-shadow: var(--db-shadow-md);
+    transform: translateY(-1px);
+}
+
+.db-action-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--db-text-1);
+    margin-bottom: 4px;
+}
+
+.db-action-sub {
+    font-size: 12px;
+    color: var(--db-text-3);
+}
+
+/* ── Tables ── */
+.db-table-wrap {
+    overflow-x: auto;
+}
+
+.db-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.db-table thead tr {
+    border-bottom: 1px solid var(--db-border);
+}
+
+.db-table th {
+    text-align: left;
+    padding: 10px 16px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--db-text-3);
+    white-space: nowrap;
+}
+
+.db-table td {
+    padding: 12px 16px;
+    border-bottom: 1px solid #F3F4F6;
+    vertical-align: middle;
+}
+
+.db-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.db-table tbody tr {
+    transition: background 0.12s;
+    cursor: pointer;
+}
+
+.db-table tbody tr:hover {
+    background: var(--db-bg);
+}
+
+.db-table tbody tr.selected {
+    background: #F0F4FF;
+}
+
+.db-td-primary {
+    font-weight: 600;
+    color: var(--db-text-1);
+}
+
+.db-td-secondary {
+    font-size: 12px;
+    color: var(--db-text-3);
+    margin-top: 2px;
+}
+
+/* ── Status Badges ── */
+.db-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: var(--db-radius-full);
+    white-space: nowrap;
+}
+
+.db-badge-pending    { background: #F3F4F6; color: #6B7280; }
+.db-badge-confirmed  { background: #EFF6FF; color: #2563EB; }
+.db-badge-packing    { background: #FFFBEB; color: #B45309; }
+.db-badge-delivered  { background: #F0FDF4; color: #16A34A; }
+.db-badge-cancelled  { background: #FEF2F2; color: #DC2626; }
+.db-badge-visible    { background: #F0FDF4; color: #16A34A; }
+.db-badge-hidden     { background: #F3F4F6; color: #6B7280; }
+
+/* ── Buttons ── */
+.db-btn-primary {
+    background: var(--db-primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--db-radius-md);
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: background 0.15s;
+    min-height: 38px;
+    font-family: var(--db-font);
+}
+
+.db-btn-primary:hover {
+    background: var(--db-primary-hover);
+}
+
+.db-btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.db-btn-outline {
+    background: var(--db-surface);
+    color: var(--db-text-1);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-md);
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: background 0.15s;
+    min-height: 38px;
+    font-family: var(--db-font);
+}
+
+.db-btn-outline:hover {
+    background: var(--db-bg);
+}
+
+.db-btn-danger {
+    background: var(--db-danger);
+    color: #fff;
+    border: none;
+    border-radius: var(--db-radius-md);
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: background 0.15s;
+    min-height: 38px;
+    font-family: var(--db-font);
+}
+
+.db-btn-danger:hover {
+    background: #DC2626;
+}
+
+.db-btn-danger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.db-btn-danger-outline {
+    background: transparent;
+    color: var(--db-danger);
+    border: 1px solid #FECACA;
+    border-radius: var(--db-radius-md);
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    transition: background 0.15s;
+    min-height: 38px;
+    font-family: var(--db-font);
+}
+
+.db-btn-danger-outline:hover {
+    background: var(--db-danger-bg);
+}
+
+.db-link {
+    color: var(--db-accent);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    transition: opacity 0.15s;
+}
+
+.db-link:hover {
+    opacity: 0.75;
+}
+
+.db-text-link {
+    color: var(--db-primary);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.db-text-link:hover {
+    color: var(--db-accent);
+}
+
+/* ── Mark as button in table ── */
+.db-mark-btn {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--db-primary);
+    background: var(--db-bg);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-sm);
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: var(--db-font);
+}
+
+.db-mark-btn:hover {
+    border-color: var(--db-primary);
+}
+
+.db-mark-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ── Forms ── */
+.db-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 16px;
+}
+
+.db-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--db-text-2);
+}
+
+.db-label-required {
+    color: var(--db-danger);
+    margin-left: 2px;
+}
+
+.db-input,
+.db-textarea {
+    width: 100%;
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-md);
+    padding: 9px 12px;
+    font-size: 14px;
+    font-family: var(--db-font);
+    color: var(--db-text-1);
+    background: var(--db-surface);
+    transition: border-color 0.15s;
+    outline: none;
+}
+
+.db-input:focus,
+.db-textarea:focus {
+    border-color: var(--db-primary);
+}
+
+.db-textarea {
+    resize: none;
+}
+
+.db-input-hint {
+    font-size: 12px;
+    color: var(--db-text-3);
+}
+
+.db-input-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+/* ── Toggle Switch ── */
+.db-toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 12px;
+    border-top: 1px solid var(--db-border);
+    margin-top: 4px;
+}
+
+.db-toggle-label {
+    font-size: 14px;
+    color: var(--db-text-1);
+}
+
+.db-toggle {
+    width: 40px;
+    height: 22px;
+    border-radius: var(--db-radius-full);
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.db-toggle.on  { background: var(--db-primary); }
+.db-toggle.off { background: var(--db-border); }
+
+.db-toggle-knob {
+    position: absolute;
+    top: 3px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: var(--db-radius-full);
+    transition: transform 0.2s;
+}
+
+.db-toggle.on  .db-toggle-knob { transform: translateX(21px); }
+.db-toggle.off .db-toggle-knob { transform: translateX(3px);  }
+
+/* ── Alert messages ── */
+.db-alert-error {
+    font-size: 13px;
+    color: var(--db-danger);
+    background: var(--db-danger-bg);
+    border: 1px solid #FECACA;
+    border-radius: var(--db-radius-md);
+    padding: 10px 14px;
+}
+
+.db-alert-success {
+    font-size: 13px;
+    color: var(--db-success);
+    background: var(--db-success-bg);
+    border: 1px solid #BBF7D0;
+    border-radius: var(--db-radius-md);
+    padding: 10px 14px;
+}
+
+/* ── Empty State ── */
+.db-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.db-empty-icon {
+    font-size: 36px;
+    margin-bottom: 14px;
+}
+
+.db-empty-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--db-text-2);
+    margin-bottom: 6px;
+}
+
+.db-empty-sub {
+    font-size: 13px;
+    color: var(--db-text-3);
+    margin-bottom: 20px;
+}
+
+/* ── Loading ── */
+.db-loading {
+    font-size: 13px;
+    color: var(--db-text-3);
+    padding: 40px;
+    text-align: center;
+}
+
+/* ── Breadcrumb ── */
+.db-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    margin-bottom: 24px;
+}
+
+.db-breadcrumb-back {
+    color: var(--db-text-2);
+    text-decoration: none;
+    transition: color 0.15s;
+}
+
+.db-breadcrumb-back:hover {
+    color: var(--db-primary);
+}
+
+.db-breadcrumb-sep {
+    color: var(--db-border);
+}
+
+.db-breadcrumb-current {
+    font-weight: 600;
+    color: var(--db-text-1);
+}
+
+/* ── Order Detail Panel ── */
+.db-detail-panel {
+    width: 280px;
+    flex-shrink: 0;
+    background: var(--db-surface);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-lg);
+    padding: 18px;
+    align-self: flex-start;
+    position: sticky;
+    top: calc(var(--db-topbar-h) + 20px);
+}
+
+.db-detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.db-detail-close {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: var(--db-text-3);
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 0.15s;
+    font-family: var(--db-font);
+}
+
+.db-detail-close:hover {
+    color: var(--db-text-1);
+}
+
+.db-detail-section {
+    margin-bottom: 14px;
+}
+
+.db-detail-section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--db-text-3);
+    margin-bottom: 4px;
+}
+
+.db-detail-text {
+    font-size: 13px;
+    color: var(--db-text-1);
+    font-weight: 500;
+}
+
+.db-detail-sub {
+    font-size: 12px;
+    color: var(--db-text-2);
+    margin-top: 1px;
+}
+
+.db-detail-divider {
+    border: none;
+    border-top: 1px solid var(--db-border);
+    margin: 12px 0;
+}
+
+.db-detail-line {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--db-text-2);
+    margin-bottom: 4px;
+}
+
+.db-detail-line.total {
+    font-weight: 700;
+    color: var(--db-text-1);
+    font-size: 14px;
+}
+
+/* ── Product thumb in table ── */
+.db-product-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--db-radius-sm);
+    background: var(--db-bg);
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid var(--db-border);
+}
+
+.db-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.db-thumb-placeholder {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--db-radius-sm);
+    background: var(--db-bg);
+    border: 1px solid var(--db-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--db-text-3);
+    flex-shrink: 0;
+}
+
+/* ── Orders list + panel layout ── */
+.db-orders-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.db-orders-list {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Desktop/mobile visibility toggles ── */
+.db-orders-desktop-only { display: block; }
+.db-orders-mobile-only  { display: none; }
+
+/* ── Mobile order cards ── */
+.db-order-card {
+    background: var(--db-surface);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.15s;
+}
+
+.db-order-card.selected {
+    border-color: var(--db-primary);
+    box-shadow: 0 0 0 2px rgba(11, 15, 47, 0.08);
+}
+
+.db-order-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.db-order-card-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.db-order-card-num {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--db-text-1);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.db-order-card-meta {
+    font-size: 12px;
+    color: var(--db-text-3);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.db-order-card-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.db-order-card-total {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--db-text-1);
+}
+
+.db-order-card-actions {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--db-border);
+}
+
+/* ── Modal ── */
+.db-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    padding: 16px;
+}
+
+/* ── Order detail modal ── */
+.db-order-modal {
+    background: var(--db-surface);
+    border-radius: var(--db-radius-lg);
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--db-border);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+}
+
+.db-order-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 18px 20px;
+    border-bottom: 1px solid var(--db-border);
+    flex-shrink: 0;
+    gap: 12px;
+}
+
+.db-order-modal-num {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--db-text-1);
+}
+
+.db-order-modal-date {
+    font-size: 12px;
+    color: var(--db-text-3);
+    margin-top: 2px;
+}
+
+.db-order-modal-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 0;
+}
+
+.db-order-modal-section {
+    padding: 14px 20px;
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.db-order-modal-section:last-child {
+    border-bottom: none;
+}
+
+.db-order-modal-items {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+.db-order-modal-item-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--db-text-1);
+    gap: 12px;
+}
+
+.db-order-modal-qty {
+    color: var(--db-text-3);
+    font-size: 12px;
+}
+
+.db-order-modal-totals {
+    padding: 14px 20px;
+    background: var(--db-bg);
+    border-top: 1px solid var(--db-border);
+}
+
+.db-order-modal-footer {
+    padding: 14px 20px;
+    border-top: 1px solid var(--db-border);
+    flex-shrink: 0;
+}
+
+.db-modal {
+    background: var(--db-surface);
+    border-radius: var(--db-radius-lg);
+    padding: 28px;
+    max-width: 400px;
+    width: 100%;
+    border: 1px solid var(--db-border);
+}
+
+.db-modal-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.db-modal-body {
+    font-size: 14px;
+    color: var(--db-text-2);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+.db-modal-actions {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+/* ── Onboarding page (full screen) ── */
+.db-onboarding-page {
+    min-height: 100vh;
+    background: var(--db-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: var(--db-font);
+}
+
+.db-onboarding-card {
+    background: var(--db-surface);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius-lg);
+    padding: 40px 36px;
+    width: 100%;
+    max-width: 440px;
+}
+
+.db-onboarding-logo {
+    width: 40px;
+    height: 40px;
+    background: var(--db-primary);
+    border-radius: var(--db-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 20px;
+}
+
+.db-slug-preview {
+    font-size: 12px;
+    color: var(--db-accent);
+    margin-top: 4px;
+}
+
+/* ── Color input row ── */
+.db-color-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.db-color-input {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--db-radius-sm);
+    border: 1px solid var(--db-border);
+    cursor: pointer;
+    padding: 2px;
+    background: transparent;
+}
+
+.db-color-value {
+    font-size: 13px;
+    font-family: monospace;
+    color: var(--db-text-2);
+}
+
+/* ── Form actions ── */
+.db-form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 20px;
+}
+
+.db-form-actions-spread {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 8px;
+}
+
+/* ── AI Section (disabled state) ── */
+.db-ai-section {
+    position: relative;
+    margin-bottom: 16px;
+}
+
+.db-ai-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(1px);
+    border-radius: var(--db-radius-md);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.db-ai-overlay-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--db-danger);
+    background: #fff;
+    border: 1px solid #FECACA;
+    padding: 4px 12px;
+    border-radius: var(--db-radius-full);
+}
+
+.db-ai-body {
+    border: 1px solid #FDE68A;
+    background: #FFFBEB;
+    border-radius: var(--db-radius-md);
+    padding: 16px;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.6;
+}
+
+.db-ai-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #B45309;
+    margin-bottom: 10px;
+}
+
+/* ──────────────────────────────────────────────────────────
+   RESPONSIVE — Mobile
+────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    /* Hide sidebar, show bottom tab bar */
+    .db-sidebar {
+        display: none;
+    }
+
+    .db-main {
+        margin-left: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 20px 16px 90px;
+        overflow-x: hidden;
+    }
+
+    /* Bottom nav */
+    .db-bottom-nav {
+        display: flex !important;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 60px;
+        background: var(--db-surface);
+        border-top: 1px solid var(--db-border);
+        z-index: 100;
+        align-items: stretch;
+    }
+
+    .db-bottom-nav-link {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        font-size: 10px;
+        color: var(--db-text-3);
+        text-decoration: none;
+        transition: color 0.15s;
+        padding: 4px 0;
+    }
+
+    .db-bottom-nav-link.active {
+        color: var(--db-primary);
+    }
+
+    .db-bottom-nav-icon {
+        font-size: 18px;
+        line-height: 1;
+    }
+
+    /* Topbar shrink on mobile */
+    .db-topbar-username { display: none; }
+    .db-store-link-pill { display: none; }
+
+    /* Metrics → 2 col */
+    .db-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .db-metric-value {
+        font-size: 22px;
+    }
+
+    .db-actions-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Orders layout stacks */
+    .db-orders-layout {
+        flex-direction: column;
+    }
+
+    .db-detail-panel {
+        width: 100%;
+        max-width: 100%;
+        position: static;
+        box-sizing: border-box;
+    }
+
+    /* Hide non-essential columns on mobile */
+    .db-col-hide-mobile {
+        display: none;
+    }
+
+    /* Tighter table cells on mobile */
+    .db-table th,
+    .db-table td {
+        padding: 10px 10px;
+        font-size: 12px;
+    }
+
+    .db-td-primary { font-size: 13px; }
+    .db-td-secondary { font-size: 11px; }
+
+    /* Compact badge & mark-as button */
+    .db-badge { font-size: 10px; padding: 3px 7px; }
+    .db-mark-btn { font-size: 11px; padding: 3px 7px; }
+
+    /* Form action buttons stack on mobile */
+    .db-form-actions,
+    .db-form-actions-spread {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+    .db-form-actions-spread { flex-direction: column-reverse; }
+    .db-form-actions > *,
+    .db-form-actions-spread > * {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Detail panel text guard */
+    .db-detail-line { font-size: 12px; word-break: break-word; }
+
+    .db-input-grid-2 { grid-template-columns: 1fr; }
+
+    .db-page-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .db-modal { padding: 20px; }
+
+    /* Orders: swap table → card list on mobile */
+    .db-orders-desktop-only { display: none; }
+    .db-orders-mobile-only  { display: block; }
+
+    /* Prevent topbar from overflowing */
+    .db-topbar { padding: 0 12px; gap: 8px; }
+}
+
+/* Bottom nav hidden on desktop */
+.db-bottom-nav {
+    display: none;
+}

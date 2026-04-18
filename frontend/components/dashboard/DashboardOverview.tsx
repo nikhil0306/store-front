@@ -13,12 +13,12 @@ interface Order {
     items: { productName: string; quantity: number }[]
 }
 
-const statusColors: Record<string, string> = {
-    pending: "bg-gray-100 text-gray-600",
-    confirmed: "bg-blue-50 text-blue-700",
-    packing: "bg-amber-50 text-amber-700",
-    delivered: "bg-green-50 text-green-700",
-    cancelled: "bg-red-50 text-red-500",
+const statusBadgeClass: Record<string, string> = {
+    pending:   "db-badge db-badge-pending",
+    confirmed: "db-badge db-badge-confirmed",
+    packing:   "db-badge db-badge-packing",
+    delivered: "db-badge db-badge-delivered",
+    cancelled: "db-badge db-badge-cancelled",
 }
 
 export default function DashboardOverview({ userEmail }: { userEmail: string }) {
@@ -52,92 +52,109 @@ export default function DashboardOverview({ userEmail }: { userEmail: string }) 
 
     return (
         <div>
-            <h1 className="text-xl font-medium mb-1">Overview</h1>
-            <p className="text-sm text-gray-500 mb-6">
-                Welcome back! Here's what's happening with your store.
-            </p>
+            <div className="db-page-header">
+                <div>
+                    <h1 className="db-page-title">Overview</h1>
+                    <p className="db-page-subtitle">
+                        Welcome back! Here's what's happening with your store.
+                    </p>
+                </div>
+                <Link href="/dashboard/products/new" className="db-btn-primary">
+                    + Add product
+                </Link>
+            </div>
 
             {/* Metrics */}
-            <div className="grid grid-cols-4 gap-3 mb-6">
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Revenue</p>
-                    <p className="text-2xl font-medium">
+            <div className="db-metrics-grid">
+                <div className="db-metric-card">
+                    <p className="db-metric-label">Revenue</p>
+                    <p className="db-metric-value">
                         {loading ? "—" : `₹${revenue.toFixed(0)}`}
                     </p>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Orders</p>
-                    <p className="text-2xl font-medium">
+                <div className="db-metric-card">
+                    <p className="db-metric-label">Orders</p>
+                    <p className="db-metric-value">
                         {loading ? "—" : confirmedOrders}
                     </p>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Pending</p>
-                    <p className="text-2xl font-medium">
+                <div className="db-metric-card">
+                    <p className="db-metric-label">Pending</p>
+                    <p className="db-metric-value">
                         {loading ? "—" : orders.filter((o) => o.status === "confirmed").length}
                     </p>
                 </div>
-                <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <p className="text-xs text-gray-400 uppercase tracking-wide mb-1">Delivered</p>
-                    <p className="text-2xl font-medium">
+                <div className="db-metric-card">
+                    <p className="db-metric-label">Delivered</p>
+                    <p className="db-metric-value">
                         {loading ? "—" : orders.filter((o) => o.status === "delivered").length}
                     </p>
                 </div>
             </div>
 
             {/* Quick actions */}
-            <div className="grid grid-cols-2 gap-3 mb-6">
-                <Link
-                    href="/dashboard/products/new"
-                    className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition"
-                >
-                    <p className="font-medium text-sm">+ Add product</p>
-                    <p className="text-xs text-gray-400 mt-0.5">Upload photo, set price</p>
+            <div className="db-actions-grid">
+                <Link href="/dashboard/products/new" className="db-action-card">
+                    <p className="db-action-title">＋ Add product</p>
+                    <p className="db-action-sub">Upload photo, set price</p>
                 </Link>
-                <Link
-                    href="/dashboard/orders"
-                    className="bg-white border border-gray-200 rounded-lg p-4 hover:bg-gray-50 transition"
-                >
-                    <p className="font-medium text-sm">View all orders</p>
-                    <p className="text-xs text-gray-400 mt-0.5">Manage and fulfil orders</p>
+                <Link href="/dashboard/orders" className="db-action-card">
+                    <p className="db-action-title">📦 View all orders</p>
+                    <p className="db-action-sub">Manage and fulfil orders</p>
                 </Link>
             </div>
 
             {/* Recent orders */}
-            <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
-                <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-                    <p className="font-medium text-sm">Recent orders</p>
-                    <Link href="/dashboard/orders" className="text-xs text-blue-600 hover:underline">
+            <div className="db-card">
+                <div className="db-card-header">
+                    <p className="db-card-title">Recent orders</p>
+                    <Link href="/dashboard/orders" className="db-link">
                         View all
                     </Link>
                 </div>
 
                 {loading ? (
-                    <div className="px-4 py-8 text-center text-sm text-gray-400">
-                        Loading orders...
-                    </div>
+                    <p className="db-loading">Loading orders...</p>
                 ) : recentOrders.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-sm text-gray-400">
-                        No orders yet
+                    <div className="db-empty">
+                        <p className="db-empty-icon">🛒</p>
+                        <p className="db-empty-title">No orders yet</p>
+                        <p className="db-empty-sub">
+                            Orders will appear here after customers checkout
+                        </p>
                     </div>
                 ) : (
-                    recentOrders.map((order) => (
-                        <div
-                            key={order.id}
-                            className="flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-0"
-                        >
-                            <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium">{order.orderNumber}</p>
-                                <p className="text-xs text-gray-400">
-                                    {order.customerName} · {order.items.map((i) => `${i.productName} ×${i.quantity}`).join(", ")}
-                                </p>
-                            </div>
-                            <p className="text-sm font-medium">₹{order.total.toFixed(2)}</p>
-                            <span className={`text-xs px-2 py-1 rounded-full ${statusColors[order.status]}`}>
-                                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
-                            </span>
-                        </div>
-                    ))
+                    <div className="db-table-wrap">
+                        <table className="db-table">
+                            <thead>
+                                <tr>
+                                    <th>Order</th>
+                                    <th>Customer</th>
+                                    <th>Total</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {recentOrders.map((order) => (
+                                    <tr key={order.id} style={{ cursor: "default" }}>
+                                        <td>
+                                            <p className="db-td-primary">{order.orderNumber}</p>
+                                            <p className="db-td-secondary">
+                                                {new Date(order.createdAt).toLocaleDateString("en-IN")}
+                                            </p>
+                                        </td>
+                                        <td className="db-td-primary">{order.customerName}</td>
+                                        <td className="db-td-primary">₹{order.total.toFixed(2)}</td>
+                                        <td>
+                                            <span className={statusBadgeClass[order.status] ?? "db-badge db-badge-pending"}>
+                                                {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 )}
             </div>
         </div>

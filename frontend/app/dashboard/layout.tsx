@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 import Sidebar from "@/components/dashboard/Sidebar"
 import TopbarWrapper from "@/components/dashboard/TopbarWrapper"
+import "./dashboard.css"
 
 export default async function DashboardLayout({
   children,
@@ -15,14 +16,14 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="db-root">
       <TopbarWrapper
         userName={session.user?.name ?? ""}
         userImage={session.user?.image ?? ""}
       />
-      <div className="flex">
+      <div className="db-shell">
         <Sidebar />
-        <main className="flex-1 p-6">{children}</main>
+        <main className="db-main">{children}</main>
       </div>
     </div>
   )

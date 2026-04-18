@@ -18,10 +18,6 @@ export default function NewProductPage() {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState("")
     const [imageUrls, setImageUrls] = useState<string[]>([])
-    const [keywords, setKeywords] = useState("")
-    const [aiSuggestion, setAiSuggestion] = useState<{ name: string, description: string } | null>(null)
-    const [aiLoading, setAiLoading] = useState(false)
-    const [aiError, setAiError] = useState("")
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -74,72 +70,35 @@ export default function NewProductPage() {
         }
     }
 
-    const handleGenerateAI = async () => {
-        if (!keywords.trim()) return
-
-        setAiLoading(true)
-        setAiError("")
-        setAiSuggestion(null)
-
-        try {
-            const res = await fetch("http://localhost:5000/api/ai/product-copy", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    keywords,
-                    userEmail: session?.user?.email,
-                    storeName: "",
-                }),
-            })
-
-            const data = await res.json()
-
-            if (!res.ok) {
-                setAiError(data.error?.message || "AI generation failed")
-                return
-            }
-
-            setAiSuggestion(data)
-        } catch (err) {
-            setAiError("Could not connect to server")
-        } finally {
-            setAiLoading(false)
-        }
-    }
-
-
     return (
-        <div className="max-w-lg">
-            <div className="flex items-center gap-2 mb-6">
-                <Link
-                    href="/dashboard/products"
-                    className="text-sm text-gray-500 hover:text-gray-700"
-                >
+        <div>
+            <div className="db-breadcrumb">
+                <Link href="/dashboard/products" className="db-breadcrumb-back">
                     ← Products
                 </Link>
-                <span className="text-gray-300">/</span>
-                <span className="text-sm font-medium">New product</span>
+                <span className="db-breadcrumb-sep">/</span>
+                <span className="db-breadcrumb-current">New product</span>
             </div>
 
-            <form onSubmit={handleSubmit}>
-                <div className="bg-white border border-gray-200 rounded-xl p-5 space-y-4 mb-4">
-                    <div>
-                        <label className="text-xs text-gray-500 block mb-1">
-                            Product name <span className="text-red-400">*</span>
+            <form onSubmit={handleSubmit} style={{ maxWidth: 520 }}>
+                <div className="db-card db-card-body" style={{ marginBottom: 16 }}>
+                    <div className="db-form-group">
+                        <label className="db-label">
+                            Product name <span className="db-label-required">*</span>
                         </label>
                         <input
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Dark chocolate truffle box"
-                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
+                            className="db-input"
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3">
-                        <div>
-                            <label className="text-xs text-gray-500 block mb-1">
-                                Price (₹) <span className="text-red-400">*</span>
+                    <div className="db-input-grid-2" style={{ marginBottom: 16 }}>
+                        <div className="db-form-group" style={{ marginBottom: 0 }}>
+                            <label className="db-label">
+                                Price (₹) <span className="db-label-required">*</span>
                             </label>
                             <input
                                 type="number"
@@ -148,12 +107,12 @@ export default function NewProductPage() {
                                 placeholder="850"
                                 min="0"
                                 step="0.01"
-                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
+                                className="db-input"
                             />
                         </div>
-                        <div>
-                            <label className="text-xs text-gray-500 block mb-1">
-                                Stock <span className="text-red-400">*</span>
+                        <div className="db-form-group" style={{ marginBottom: 0 }}>
+                            <label className="db-label">
+                                Stock <span className="db-label-required">*</span>
                             </label>
                             <input
                                 type="number"
@@ -161,109 +120,74 @@ export default function NewProductPage() {
                                 onChange={(e) => setStock(e.target.value)}
                                 placeholder="20"
                                 min="0"
-                                className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
+                                className="db-input"
                             />
                         </div>
                     </div>
 
-                    <div>
-                        <label className="text-xs text-gray-500 block mb-1">
-                            Description
-                        </label>
+                    <div className="db-form-group">
+                        <label className="db-label">Description</label>
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder="Tell customers about this product..."
                             rows={3}
-                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400 resize-none"
+                            className="db-textarea"
                         />
                     </div>
 
-                    <div>
-                        <label className="text-xs text-gray-500 block mb-1">
-                            Category
-                        </label>
+                    <div className="db-form-group" style={{ marginBottom: 0 }}>
+                        <label className="db-label">Category</label>
                         <input
                             type="text"
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                             placeholder="Chocolates, Cakes, Cupcakes..."
-                            className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-gray-400"
+                            className="db-input"
                         />
                     </div>
                 </div>
 
-
-                {/* AI Copy Writer — Coming Soon */}
-                <div className="relative">
-                    {/* Overlay */}
-                    <div className="absolute inset-0 bg-red-500/10 backdrop-blur-[1px] rounded-lg z-10 flex flex-col items-center justify-center gap-1">
-                        <span className="text-xs font-large text-red-500">
-                            Currently unavailable
-                        </span>
-                        {/* <span className="text-xs text-red-500">
-                            Currently unavailable
-                        </span> */}
+                {/* AI Copy Writer — Currently Unavailable */}
+                <div className="db-ai-section" style={{ marginBottom: 16 }}>
+                    <div className="db-ai-overlay">
+                        <span className="db-ai-overlay-label">Currently unavailable</span>
                     </div>
-
-                    {/* UI underneath — blurred and non-interactive */}
-                    <div className="border border-amber-100 bg-amber-50 rounded-lg p-4 pointer-events-none select-none opacity-60">
-                        <p className="text-xs font-medium text-amber-700 uppercase tracking-wide mb-2">
-                            AI Generator
-                        </p>
-                        <div className="flex gap-2">
+                    <div className="db-ai-body">
+                        <p className="db-ai-label">AI Generator</p>
+                        <div style={{ display: "flex", gap: 8 }}>
                             <input
                                 type="text"
                                 disabled
                                 placeholder="Product Information"
-                                className="flex-1 border border-amber-200 rounded-lg px-3 py-2 text-sm bg-white"
+                                className="db-input"
+                                style={{ flex: 1 }}
                             />
-                            <button
-                                type="button"
-                                disabled
-                                className="px-4 py-2 bg-amber-500 text-white text-sm font-medium rounded-lg opacity-50 whitespace-nowrap"
-                            >
+                            <button type="button" disabled className="db-btn-primary" style={{ opacity: 0.5 }}>
                                 Generate
                             </button>
-                        </div>
-                        <div className="mt-3 p-3 bg-white border border-amber-200 rounded-lg">
-                            <p className="text-xs font-medium text-gray-400 mb-1">
-                                Product title
-                            </p>
-                            <p className="text-xs text-gray-300 leading-relaxed">
-                                Product description
-                            </p>
                         </div>
                     </div>
                 </div>
 
-                <div>
-                    <label className="text-xs text-gray-500 block mb-1">
-                        Product images
-                    </label>
+                <div className="db-form-group">
+                    <label className="db-label">Product images</label>
                     <ImageUploadZone
                         imageUrls={imageUrls}
                         onImagesChange={setImageUrls}
                     />
                 </div>
 
-                {error && (
-                    <p className="text-xs text-red-500 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mb-4">
-                        {error}
-                    </p>
-                )}
+                {error && <p className="db-alert-error" style={{ marginBottom: 12 }}>{error}</p>}
 
-                <div className="flex justify-end gap-2">
-                    <Link
-                        href="/dashboard/products"
-                        className="px-4 py-2 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition"
-                    >
+                <div className="db-form-actions">
+                    <Link href="/dashboard/products" className="db-btn-outline">
                         Cancel
                     </Link>
                     <button
                         type="submit"
                         disabled={loading || !name || !price || !stock}
-                        className="px-5 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-700 transition disabled:opacity-50"
+                        className="db-btn-primary"
                     >
                         {loading ? "Saving..." : "Save product"}
                     </button>

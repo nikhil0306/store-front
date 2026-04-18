@@ -22,6 +22,7 @@ app.get('/health', (req, res) => {
 
 // Routes
 app.use('/api/store', storeRoutes)
+app.use('/api/stores', storeRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/upload', uploadRoutes)

@@ -227,6 +227,34 @@ router.get('/:slug', async (req, res) => {
     }
 })
 
+// GET /stores — list all active stores (public)
+router.get('/', async (req, res) => {
+    try {
+        const stores = await prisma.store.findMany({
+            where: { isActive: true },
+            select: {
+                id: true,
+                name: true,
+                slug: true,
+                description: true,
+                logoUrl: true,
+                themeColor: true,
+                city: true,
+                createdAt: true,
+                _count: {
+                    select: { products: { where: { isVisible: true } } },
+                },
+            },
+            orderBy: { createdAt: 'desc' },
+        })
 
+        return res.json({ stores, total: stores.length })
+    } catch (error) {
+        console.error('Get stores error:', error)
+        return res.status(500).json({
+            error: { code: 'SERVER_ERROR', message: 'Something went wrong', status: 500 },
+        })
+    }
+})
 
 module.exports = router
