@@ -10,6 +10,8 @@ export default async function DashboardPage() {
         redirect("/login")
     }
 
+    let shouldRedirect = false;
+
     try {
         const res = await fetch(
             `${API_URL}/api/store/me?userEmail=${session.user?.email}`,
@@ -17,10 +19,14 @@ export default async function DashboardPage() {
         )
 
         if (res.status === 404) {
-            redirect("/dashboard/onboarding")
+            shouldRedirect = true;
         }
     } catch (err) {
         console.error("Failed to check store status:", err)
+    }
+
+    if (shouldRedirect) {
+        redirect("/dashboard/onboarding")
     }
 
     return <DashboardOverview userEmail={session.user?.email ?? ""} />
